@@ -10,7 +10,53 @@
 </head>
 
 <body>
+  <header>
+    <img id="logo" src="./src/img/logoipsum-logo-34.svg" alt="dinerd logo">
+    <div class="user-selection-button">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="32px" id="Layer_1"
+        style="enable-background:new 0 0 32 32;" version="1.1" viewBox="0 0 32 32" width="32px" xml:space="preserve">
+        <path
+          d="M4,10h24c1.104,0,2-0.896,2-2s-0.896-2-2-2H4C2.896,6,2,6.896,2,8S2.896,10,4,10z M28,14H4c-1.104,0-2,0.896-2,2  s0.896,2,2,2h24c1.104,0,2-0.896,2-2S29.104,14,28,14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2  S29.104,22,28,22z" />
+      </svg>
+    </div>
+  </header>
+  <aside id="user-selection-list">
 
+  </aside>
+  <main>
+    <div class="search-form-container">
+      <h1>dinerd</h1>
+      <h2>Where are we eating tonight?</h2>
+      <p>Select a location, the distance you're willing to travel, and your desired price range. Then click "Go!"</p>
+      <form id="search-form">
+        <label for="location">Location:</label>
+        <input id="location" name="location" type="text">
+        <label for="distance">Distance:</label>
+        <input id="distance" name="distance" type="range" min="0" max="13000" step="100" value="1200">
+        <output for="distance" id="distance-display"></output>
+        <fieldset id="pricing">
+          <legend>Price Range:</legend>
+          <div class="checkbox-group">
+            <input id="lowest-price" type="checkbox" name="lowest-price" value="1">
+            <label for="lowest-price">$</label>
+          </div>
+          <div class="checkbox-group">
+            <input id="mid-low-price" type="checkbox" name="mid-low-price" value="2">
+            <label for="mid-low-price">$$</label>
+          </div>
+          <div class="checkbox-group">
+            <input id="mid-high-price" type="checkbox" name="mid-high-price" value="3">
+            <label for="mid-high-price">$$$</label>
+          </div>
+          <div class="checkbox-group">
+            <input id="highest-price" type="checkbox" name="highest-price" value="4">
+            <label for="highest-price">$$$$</label>
+          </div>
+        </fieldset>
+        <input type='submit' value="Go!">
+      </form>
+    </div>
+  </main>
 </body>
 
 </html>

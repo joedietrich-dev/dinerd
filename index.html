@@ -35,9 +35,8 @@
         </div>
         <div id="distance-group" class="form-group">
           <label for="distance">Distance:</label>
-          <input id="distance" name="distance" type="range" min="0" max="13000" step="100" value="1300"
-            onchange="handleChangeRange">
-          <output for="distance" id="distance-display">0.25 mile</output>
+          <input id="distance" name="distance" type="range" min=".5" max="20" step=".25" value="5">
+          <output name="distance-display" for="distance" id="distance-display">0.25 mile</output>
         </div>
         <fieldset id="pricing" class="form-group checkbox-group">
           <legend>Price Range:</legend>
@@ -62,6 +61,7 @@
       </form>
     </div>
   </main>
+  <script type="application/javascript" src="src/index.js"></script>
 </body>
 
 </html>

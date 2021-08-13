@@ -14,13 +14,19 @@ class SavedRestaurants {
     localStorage.setItem('saved-restaurants', JSON.stringify(this.restaurants));
     return this.restaurants;
   }
+  removeRestaurantById(id) {
+    this.restaurants = [...this.restaurants.filter(r => r.id !== id)];
+    localStorage.setItem('saved-restaurants', JSON.stringify(this.restaurants));
+    return this.restaurants;
+  }
 }
 
 app();
 
-function app() {
+async function app() {
   const visitedRestaurants = new SavedRestaurants();
 
+  // form setup
   const rangeControl = document.querySelector("#distance");
   const rangeOutput = document.querySelector('#distance-display')
   rangeControl.addEventListener('input', (e) => {
@@ -33,27 +39,52 @@ function app() {
   })
 
   const searchForm = document.querySelector('#search-form');
-  searchForm.addEventListener('submit', e => {
+  searchForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const { location, distance } = e.target;
     const prices = Array.from(document.querySelectorAll('#search-form #pricing input[type=checkbox]:checked'))
       .map(check => check.value)
       .join(',');
-    getRestaurants(location.value, convertToMeters(distance.value), prices)
-  })
-
-  async function getRestaurants(location, distance, prices) {
-    const isTest = true;
-    const url = isTest ? 'http://localhost:3000/api/test' : `http://localhost:3000/restaurants?location=${location}&price=${prices}&distance=${distance}`;
-    const results = await fetch(url, { method: 'GET' })
-      .then(res => res.json());
-    const restaurantsData = results.businesses;
-    const unvisitedRestaurants = restaurantsData.filter(restaurant => !visitedRestaurants.getRestaurantIds().includes(restaurant.id));
+    const restaurantsData = await getRestaurants(location.value, convertToMeters(distance.value), prices);
     console.log(restaurantsData);
+    const unvisitedRestaurants = restaurantsData.filter(restaurant => !visitedRestaurants.getRestaurantIds().includes(restaurant.id));
     console.log(unvisitedRestaurants);
 
     const restaurantHolder = document.querySelector('#restaurant-holder');
+    restaurantHolder.innerHTML = '';
     restaurantHolder.append(...unvisitedRestaurants.map(r => renderRestaurant(r)));
+  })
+
+  renderVisitedList();
+
+  async function getRestaurants(location, distance, prices) {
+    const isTest = false;
+    const url = isTest ? 'http://localhost:3000/api/test' : `http://localhost:3000/restaurants?location=${location}&price=${prices}&distance=${distance}`;
+    const results = await fetch(url, { method: 'GET' })
+      .then(res => res.json());
+    return results.businesses;
+  }
+
+  function renderVisitedList() {
+    const visitedList = document.querySelector('#user-selection-list');
+    visitedList.innerHTML = '';
+    const visitedItems = visitedRestaurants.getRestaurants().map(restaurant => {
+      const visitedItem = document.createElement('li');
+      visitedItem.classList.add('visited-list-item')
+
+      const visitedItemName = document.createElement('p');
+      visitedItemName.innerText = restaurant.name;
+
+      const removeVisitedItemButton = document.createElement('button');
+      removeVisitedItemButton.innerText = 'X';
+      removeVisitedItemButton.addEventListener('click', e => {
+        visitedRestaurants.removeRestaurantById(restaurant.id);
+        visitedItem.remove();
+      });
+      visitedItem.append(visitedItemName, removeVisitedItemButton);
+      return visitedItem;
+    })
+    visitedList.append(...visitedItems);
   }
 
   function renderRestaurant(restaurantData) {
@@ -129,6 +160,7 @@ function app() {
       }
       restaurantCard.classList.add('visited');
       visitedButton.disabled = true;
+      renderVisitedList();
     })
 
     const prevButton = document.createElement('button');
@@ -171,9 +203,5 @@ function app() {
 
   function convertToMeters(miles) {
     return Math.floor(miles * 1609.34);
-  }
-
-  function addSavedRestaurant(restaurant) {
-
   }
 }

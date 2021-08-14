@@ -55,7 +55,34 @@ async function app() {
     restaurantHolder.append(...unvisitedRestaurants.map(r => renderRestaurant(r)));
   })
 
+
+
+  // Footer setup
+  const searchFooter = createFooter();
+  const searchFormContainer = document.querySelector('.search-form-container');
+  searchFormContainer.append(searchFooter);
+
+
+
+  // Visited List Setup
+  const visitedList = document.querySelector('#visited-restaurant-holder');
+  const openSidebarButton = document.querySelector('.open-sidebar-control');
+  openSidebarButton.addEventListener('click', e => {
+    visitedList.classList.remove('closed');
+  })
+  const closeSidebarButton = document.querySelector('#close-visited-restaurant');
+  closeSidebarButton.addEventListener('click', e => {
+    visitedList.classList.add('closed');
+  })
   renderVisitedList();
+
+
+
+
+
+
+
+
 
   async function getRestaurants(location, distance, prices) {
     const isTest = false;
@@ -89,7 +116,7 @@ async function app() {
 
   function renderRestaurant(restaurantData) {
     const restaurantCard = document.createElement('div');
-    restaurantCard.classList.add('restaurant-card', 'hidden');
+    restaurantCard.classList.add('card', 'restaurant-card', 'hidden');
 
     // Restaurnt Name
     const restaurantName = document.createElement('h2');
@@ -98,16 +125,16 @@ async function app() {
 
     // Ratings And Reviews
     const ratingAndReviewCountLink = document.createElement('a');
-    ratingAndReviewCountLink.href = restaurantData.url;
-    ratingAndReviewCountLink.classList.add('rating-review')
+    ratingAndReviewCountLink.href = restaurantData.url || 'https://yelp.com';
+    ratingAndReviewCountLink.classList.add('rating-review');
     const rating = getRatingImage(restaurantData.rating);
     const reviewCount = document.createElement('p');
-    reviewCount.innerText = `${restaurantData.review_count} Reviews`
+    reviewCount.innerText = `${restaurantData.review_count} Reviews`;
     ratingAndReviewCountLink.append(rating, reviewCount);
 
     // Price
     const price = document.createElement('p');
-    price.innerText = 'Price: ' + restaurantData.price;
+    price.innerText = 'Price: ' + (restaurantData.price || 'Not Provided');
     price.classList.add('price');
 
     // Restaurant Types
@@ -171,6 +198,9 @@ async function app() {
     nextButton.classList.add('button', 'next-button');
     nextButton.innerText = '>';
 
+    // Footer
+    const footer = createFooter(restaurantData);
+
     restaurantCard.append(
       restaurantName,
       ratingAndReviewCountLink,
@@ -182,7 +212,8 @@ async function app() {
       mainImage,
       locationMap,
       prevButton,
-      nextButton);
+      nextButton,
+      footer);
 
     setTimeout(() => map.invalidateSize(), 1000);
 
@@ -199,6 +230,34 @@ async function app() {
     ratingImage.srcset = `${fileName}@2x.png 2x, ${fileName}@3x.png 3x`;
     ratingImage.alt = `Rating: ${rating}`;
     return ratingImage;
+  }
+
+  function createFooter(attributionURL = 'https://yelp.com') {
+    const footer = document.createElement('footer');
+    const attribution = document.createElement('div');
+    attribution.classList.add('attribution-group');
+
+    const yelpLink = document.createElement('a');
+    yelpLink.href = attributionURL;
+
+    const yelpLogo = document.createElement('img');
+    yelpLogo.src = './src/img/yelp_logos/yelp_logo.svg';
+    yelpLogo.alt = 'Yelp Logo';
+    yelpLogo.classList.add('footer-logo-image');
+    yelpLogo.width = '50';
+    const yelpText = document.createElement('p');
+    yelpText.innerText = 'Data provided by\xa0'
+
+    yelpLink.append(yelpText, yelpLogo);
+    attribution.append(yelpLink);
+
+    const copyright = document.createElement('p');
+    copyright.classList.add('footer-copyright');
+    copyright.innerText = `©${new Date().getFullYear()} J. Dietrich / Dinerd`
+
+    footer.append(copyright, attribution);
+
+    return footer
   }
 
   function convertToMeters(miles) {

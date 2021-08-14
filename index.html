@@ -6,6 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./src/styles/normalize.css">
+  <link rel="stylesheet" href="./src/styles/styles.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
     integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
     crossorigin="" />
@@ -14,8 +15,8 @@
 
 <body>
   <header>
-    <img id="logo" src="./src/img/logoipsum-logo-34.svg" alt="dinerd logo">
-    <div class="user-selection-button">
+    <img id="logo" src="./src/img/DinerdLogo.svg" alt="dinerd logo" width='128'>
+    <div class="open-sidebar-control">
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="32px" id="Layer_1"
         style="enable-background:new 0 0 32 32;" version="1.1" viewBox="0 0 32 32" width="32px" xml:space="preserve">
         <path
@@ -24,8 +25,8 @@
     </div>
   </header>
   <main>
-    <div class="search-form-container">
-      <h1>dinerd</h1>
+    <div class="search-form-container card">
+      <h1>Welcome to Dinerd!</h1>
       <h2>Where are we eating tonight?</h2>
       <p>Select a location, the distance you're willing to travel, and your desired price range. Then click "Go!"</p>
       <form id="search-form">
@@ -40,21 +41,23 @@
         </div>
         <fieldset id="pricing" class="form-group checkbox-group">
           <legend>Price Range:</legend>
-          <div class="checkbox-group">
-            <input id="lowest-price" type="checkbox" name="lowest-price" value="1">
-            <label for="lowest-price">$</label>
-          </div>
-          <div class="checkbox-group">
-            <input id="mid-low-price" type="checkbox" name="mid-low-price" value="2">
-            <label for="mid-low-price">$$</label>
-          </div>
-          <div class="checkbox-group">
-            <input id="mid-high-price" type="checkbox" name="mid-high-price" value="3">
-            <label for="mid-high-price">$$$</label>
-          </div>
-          <div class="checkbox-group">
-            <input id="highest-price" type="checkbox" name="highest-price" value="4">
-            <label for="highest-price">$$$$</label>
+          <div class="checkboxes">
+            <div class="checkbox-group">
+              <input id="lowest-price" type="checkbox" name="lowest-price" value="1">
+              <label for="lowest-price">$</label>
+            </div>
+            <div class="checkbox-group">
+              <input id="mid-low-price" type="checkbox" name="mid-low-price" value="2">
+              <label for="mid-low-price">$$</label>
+            </div>
+            <div class="checkbox-group">
+              <input id="mid-high-price" type="checkbox" name="mid-high-price" value="3">
+              <label for="mid-high-price">$$$</label>
+            </div>
+            <div class="checkbox-group">
+              <input id="highest-price" type="checkbox" name="highest-price" value="4">
+              <label for="highest-price">$$$$</label>
+            </div>
           </div>
         </fieldset>
         <input type='submit' value="Go!">
@@ -62,7 +65,11 @@
     </div>
     <div id="restaurant-holder" class="card-holder"></div>
   </main>
-  <aside class="visited-restaurant-holder hidden">
+  <aside class="visited-restaurant-holder closed" id="visited-restaurant-holder">
+    <div class="close-dialog-button" id="close-visited-restaurant">
+      <img src="./src/img/211651_close_round_icon.svg" width="20">
+    </div>
+
     <h3>Visited Restaurants</h3>
     <ul id="user-selection-list"></ul>
   </aside>

@@ -1,0 +1,203 @@
+@import url('https://fonts.googleapis.com/css2?family=Georama&display=swap');
+
+:root {
+  --mults: 2;
+  --normal: 1rem;
+  --large: calc(var(--normal) * var(--mults));
+  --x-large: calc(var(--large) * var(--mults));
+  --xx-large: calc(var(--x-large) * var(--mults));
+  --small: calc(var(--normal) / var(--mults));
+  --x-small: calc(var(--small) / var(--mults));
+  --xx-small: calc(var(--x-small) / var(--mults));
+  --brand-hue: 203;
+  --brand-sat: 77%;
+  --brand-sat-unsat: calc(var(--brand-sat) - 50%);
+  --brand-lit: 88%;
+  --brand-lit-dark: calc(var(--brand-lit) - 20%);
+  --brand-opa: 1;
+  --brand-color: hsla(var(--brand-hue), var(--brand-sat), var(--brand-lit), var(--brand-opa));
+  --brand-color-unsat: hsla(var(--brand-hue), var(--brand-sat-unsat), var(--brand-lit), var(--brand-opa));
+  --brand-color-dark: hsla(var(--brand-hue), var(--brand-sat), var(--brand-lit-dark), var(--brand-opa));
+}
+
+body {
+  background-color: hsl(180, 17%, 98%);
+  background-image: url("data:image/svg+xml,<svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='50.222' height='29.003' patternTransform='scale(1) rotate(10)'><rect x='0' y='0' width='100%' height='100%' fill='hsla(180, 17%, 98%,0)'/><path d='M58.592-14.503h-16.74m6.277 3.627H56.5l4.188 7.25h-8.373zM60.686 3.623l-4.187 7.25h-8.372l4.187-7.25zM41.852-7.252l4.185 7.25-4.185 7.252L37.666 0zm25.11 7.25L58.593 14.5h-16.74L33.481-.001l8.371-14.501m16.74-.001l8.37 14.502m0 0h-16.74v0m-8.37-14.501l8.37 14.502-8.37 14.503M8.371-14.502H-8.37m6.276 3.627h8.371l4.188 7.25H2.093zM10.464 3.624l-4.186 7.25h-8.373l4.187-7.25zM-8.37-7.251L-4.185 0-8.37 7.252-12.556 0zM16.74 0l-8.37 14.502H-8.37L-16.742 0l8.371-14.501m16.74-.001L16.741-.001m0 0H.001v0m-8.37-14.501L0 0l-8.37 14.503m6.275 3.625h8.372l4.187 7.25H2.093zm12.558 14.499l-4.187 7.25h-8.372l4.187-7.25zM-8.371 21.752l4.185 7.25-4.185 7.252-4.185-7.251zm25.112 7.25L8.37 43.504H-8.37l-8.371-14.502 8.37-14.501M8.37 14.5l8.372 14.502m0 0H0v0M-8.37 14.502L0 29.003l-8.37 14.503M48.13 18.127l8.371.001 4.188 7.25h-8.373zm12.557 14.5l-4.187 7.249-8.372.001 4.187-7.25zM41.852 21.751l4.185 7.25-4.185 7.252-4.186-7.252zm25.11 7.25l-8.37 14.502h-16.74L33.48 29.003m25.11-14.503l8.372 14.503m0 0h-16.74v0m-8.371-14.501l8.37 14.501-8.37 14.503M33.482 0h-16.74m6.276 3.627l8.371.001 4.188 7.25h-8.373zm12.557 14.5l-4.187 7.249-8.372.001 4.187-7.25zM16.741 7.25l4.185 7.25-4.185 7.252-4.186-7.252zm25.11 7.25l-8.37 14.502h-16.74m25.11-14.502h-16.74v0M16.742 0l8.37 14.502-8.37 14.503'  stroke-linecap='square' stroke-width='0.5' stroke='hsla(0,0%,0%,.05)' fill='none'/></pattern></defs><rect width='800%' height='800%' transform='translate(0,0)' fill='url(%23a)'/></svg>") ;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: 'Georama', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+button,
+input[type=submit] {
+  padding: var(--small) var(--large);
+  border: none;
+  background-color: hsl(233, 77%, 58%);
+  color: white;
+  cursor: pointer;
+}
+
+/* -------------- Header -------------- */
+header {
+  position: sticky;
+  display: flex;
+  justify-content: space-between;
+  padding: var(--large) var(--normal);
+  background-color: var(--brand-color);
+}
+header #logo {
+  width: var(--xx-large);
+}
+header .open-sidebar-control {
+  cursor: pointer;
+}
+
+/* -------------- Main -------------- */
+main {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* -------------- Card -------------- */
+.card {
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, 
+              rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, 
+              rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+}
+
+/* -------------- Search Form -------------- */
+div.search-form-container {
+  width: 30rem;
+  margin: var(--large) auto 0 auto;
+}
+
+div.search-form-container h1,
+div.search-form-container h2,
+div.search-form-container p {
+  text-align: center;
+}
+
+div.search-form-container h1 {
+  margin-top: 0;
+  padding-top: var(--large);
+}
+div.search-form-container p {
+  line-height: 1.5;
+}
+
+form#search-form {
+  width: 80%;
+  margin: 0 auto var(--normal) auto;
+  display: grid;
+  gap: var(--normal);
+}
+
+form .form-group{
+  display: flex;
+  flex-direction: column;
+}
+form .form-group > label,
+form .form-group > legend {
+  margin: 0 0 var(--small) 0;
+}
+
+form fieldset#pricing {
+  border: none;
+  display: block;
+  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
+  margin-inline: 0;
+}
+
+form fieldset#pricing .checkboxes {
+  display: flex;
+  justify-content: space-between;
+}
+
+form fieldset#pricing .checkbox-group input{
+  display: none;
+}
+form fieldset#pricing .checkbox-group label{
+  display: block;
+  padding: var(--small);
+  width: var(--x-large);
+  background-color: var(--brand-color);
+  text-align: center;
+}
+form fieldset#pricing .checkbox-group input:checked + label{
+  background-color: gray;
+}
+form fieldset#pricing .checkbox-group input + label:hover{
+  cursor: pointer;
+  background-color: var(--brand-color-dark);
+  transition: .1s;
+}
+
+form input[type=submit] {
+  width: fit-content;
+  height: fit-content;
+}
+
+/* -------------- Footer -------------- */
+footer {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--brand-color);
+  padding: var(--small) var(--normal);
+}
+
+footer .attribution-group > a {
+  display: flex;
+}
+
+/* -------------- Visited Restaurants -------------- */
+aside.visited-restaurant-holder {
+  height: 100%;
+  position: absolute;
+  right: 0;
+  background-color: var(--brand-color-unsat);
+  transition: 0.5s
+}
+aside.visited-restaurant-holder .close-dialog-button { 
+  position: absolute;
+  right: var(--large);
+  top: var(--large);
+  cursor: pointer;
+}
+aside.visited-restaurant-holder h3 {
+  margin-top: 0;
+  padding-top: var(--large);
+  padding-left: var(--large);
+}
+aside.visited-restaurant-holder ul {
+  display: flex;
+  list-style: none;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+}
+aside.visited-restaurant-holder ul > li {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--small) var(--large);
+}
+aside.visited-restaurant-holder ul > li:not(:last-child) {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+aside.visited-restaurant-holder ul > li p {
+  margin-right: var(--normal);
+}
+aside.visited-restaurant-holder.closed {
+  right: -25rem;
+}
+
+/* -------------- Visited Restaurants -------------- */

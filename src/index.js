@@ -42,17 +42,19 @@ async function app() {
   searchForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const { location, distance } = e.target;
+    const allPrices = "1,2,3,4"
     const prices = Array.from(document.querySelectorAll('#search-form #pricing input[type=checkbox]:checked'))
       .map(check => check.value)
-      .join(',');
+      .join(',') || allPrices;
     const restaurantsData = await getRestaurants(location.value, convertToMeters(distance.value), prices);
     console.log(restaurantsData);
-    const unvisitedRestaurants = restaurantsData.filter(restaurant => !visitedRestaurants.getRestaurantIds().includes(restaurant.id));
+    const unvisitedRestaurants = scrambleArray(restaurantsData.filter(restaurant => !visitedRestaurants.getRestaurantIds().includes(restaurant.id)), 20);
     console.log(unvisitedRestaurants);
 
     const restaurantHolder = document.querySelector('#restaurant-holder');
     restaurantHolder.innerHTML = '';
     restaurantHolder.append(...unvisitedRestaurants.map(r => renderRestaurant(r)));
+    if (unvisitedRestaurants.length === 0) showResultError();
   })
 
 
@@ -87,9 +89,27 @@ async function app() {
   async function getRestaurants(location, distance, prices) {
     const isTest = false;
     const url = isTest ? 'http://localhost:3000/api/test' : `http://localhost:3000/restaurants?location=${location}&price=${prices}&distance=${distance}`;
+
     const results = await fetch(url, { method: 'GET' })
-      .then(res => res.json());
-    return results.businesses;
+      .then(res => {
+        if (res.status === 400) throw new Error('Results not found!')
+        return res.json()
+      })
+      .catch(err => {
+        console.log(err);
+        showResultError();
+      });
+    return results?.businesses || [];
+  }
+
+  function showResultError() {
+    const errorMessage = document.querySelector('#submit-error');
+    errorMessage.classList.remove('hidden');
+    setTimeout(() => errorMessage.classList.add('error'), 50);
+    setTimeout(() => {
+      errorMessage.classList.remove('error');
+      setTimeout(() => errorMessage.classList.add('hidden'), 500);
+    }, 5000);
   }
 
   function renderVisitedList() {
@@ -116,7 +136,7 @@ async function app() {
 
   function renderRestaurant(restaurantData) {
     const restaurantCard = document.createElement('div');
-    restaurantCard.classList.add('card', 'restaurant-card', 'hidden');
+    restaurantCard.classList.add('card', 'restaurant-card', 'offscreen');
 
     // Restaurnt Name
     const restaurantName = document.createElement('h2');
@@ -142,7 +162,10 @@ async function app() {
     cuisineTypes.innerText = restaurantData.categories.map(category => category.title).join(' | ')
     cuisineTypes.classList.add('cuisine-type');
 
-    const priceAndRestaurantTypes = document.createElement('div');
+    // Ratings, Price, Types
+    const restaurantDetails = document.createElement('div');
+    restaurantDetails.classList.add('restaurant-details');
+    restaurantDetails.append(ratingAndReviewCountLink, price, cuisineTypes);
 
 
     // Phone
@@ -156,15 +179,15 @@ async function app() {
     address.classList.add('address');
 
     // Restaurant Image
-    const mainImage = document.createElement('img');
-    mainImage.src = restaurantData.image_url;
+    const mainImage = document.createElement('div');
+    mainImage.style.backgroundImage = `url(${restaurantData.image_url})`;
     mainImage.classList.add('restaurant-image');
 
     // Map
     const locationMap = document.createElement('div');
-    locationMap.classList.add('map-location')
-    locationMap.style.height = '300px'
-    locationMap.style.width = '300px'
+    locationMap.classList.add('map-location');
+    locationMap.style.height = '100%';
+    locationMap.style.width = '100%';
     const map = L.map(locationMap).setView([restaurantData.coordinates.latitude, restaurantData.coordinates.longitude], 16);
     const marker = L.marker([restaurantData.coordinates.latitude, restaurantData.coordinates.longitude]).addTo(map);
     const Stamen_Toner = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.{ext}', {
@@ -187,6 +210,7 @@ async function app() {
       }
       restaurantCard.classList.add('visited');
       visitedButton.disabled = true;
+      visitedButton.innerText = 'Visited';
       renderVisitedList();
     })
 
@@ -198,21 +222,26 @@ async function app() {
     nextButton.classList.add('button', 'next-button');
     nextButton.innerText = '>';
 
+    // Phone, Address, Visited
+    const restaurantContactDetails = document.createElement('div');
+    restaurantContactDetails.classList.add('restaurant-contact');
+    restaurantContactDetails.append(phoneNumber, address, visitedButton);
+
+    // Nav Buttons
+    const navButtons = document.createElement('div');
+    navButtons.classList.add('restaurant-nav');
+    navButtons.append(prevButton, nextButton);
+
     // Footer
-    const footer = createFooter(restaurantData);
+    const footer = createFooter(restaurantData.url);
 
     restaurantCard.append(
       restaurantName,
-      ratingAndReviewCountLink,
-      price,
-      cuisineTypes,
-      phoneNumber,
-      address,
-      visitedButton,
+      restaurantDetails,
+      restaurantContactDetails,
       mainImage,
       locationMap,
-      prevButton,
-      nextButton,
+      navButtons,
       footer);
 
     setTimeout(() => map.invalidateSize(), 1000);
@@ -262,5 +291,16 @@ async function app() {
 
   function convertToMeters(miles) {
     return Math.floor(miles * 1609.34);
+  }
+
+  function scrambleArray(arr, desiredLength = Infinity) {
+    // const desiredElements = (arr.length < desiredLength) ? arr.length : desiredLength;
+    const orderedArray = [...arr];
+    const scrambledArray = [];
+    while (orderedArray.length > 0 && scrambledArray.length < desiredLength) {
+      const index = Math.floor(orderedArray.length * Math.random());
+      scrambledArray.push(...orderedArray.splice(index, 1));
+    }
+    return scrambledArray;
   }
 }

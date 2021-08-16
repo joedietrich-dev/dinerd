@@ -21,14 +21,18 @@
 }
 
 body {
+  position: fixed;
   background-color: hsl(180, 17%, 98%);
-  background-image: url("data:image/svg+xml,<svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='50.222' height='29.003' patternTransform='scale(1) rotate(10)'><rect x='0' y='0' width='100%' height='100%' fill='hsla(180, 17%, 98%,0)'/><path d='M58.592-14.503h-16.74m6.277 3.627H56.5l4.188 7.25h-8.373zM60.686 3.623l-4.187 7.25h-8.372l4.187-7.25zM41.852-7.252l4.185 7.25-4.185 7.252L37.666 0zm25.11 7.25L58.593 14.5h-16.74L33.481-.001l8.371-14.501m16.74-.001l8.37 14.502m0 0h-16.74v0m-8.37-14.501l8.37 14.502-8.37 14.503M8.371-14.502H-8.37m6.276 3.627h8.371l4.188 7.25H2.093zM10.464 3.624l-4.186 7.25h-8.373l4.187-7.25zM-8.37-7.251L-4.185 0-8.37 7.252-12.556 0zM16.74 0l-8.37 14.502H-8.37L-16.742 0l8.371-14.501m16.74-.001L16.741-.001m0 0H.001v0m-8.37-14.501L0 0l-8.37 14.503m6.275 3.625h8.372l4.187 7.25H2.093zm12.558 14.499l-4.187 7.25h-8.372l4.187-7.25zM-8.371 21.752l4.185 7.25-4.185 7.252-4.185-7.251zm25.112 7.25L8.37 43.504H-8.37l-8.371-14.502 8.37-14.501M8.37 14.5l8.372 14.502m0 0H0v0M-8.37 14.502L0 29.003l-8.37 14.503M48.13 18.127l8.371.001 4.188 7.25h-8.373zm12.557 14.5l-4.187 7.249-8.372.001 4.187-7.25zM41.852 21.751l4.185 7.25-4.185 7.252-4.186-7.252zm25.11 7.25l-8.37 14.502h-16.74L33.48 29.003m25.11-14.503l8.372 14.503m0 0h-16.74v0m-8.371-14.501l8.37 14.501-8.37 14.503M33.482 0h-16.74m6.276 3.627l8.371.001 4.188 7.25h-8.373zm12.557 14.5l-4.187 7.249-8.372.001 4.187-7.25zM16.741 7.25l4.185 7.25-4.185 7.252-4.186-7.252zm25.11 7.25l-8.37 14.502h-16.74m25.11-14.502h-16.74v0M16.742 0l8.37 14.502-8.37 14.503'  stroke-linecap='square' stroke-width='0.5' stroke='hsla(0,0%,0%,.05)' fill='none'/></pattern></defs><rect width='800%' height='800%' transform='translate(0,0)' fill='url(%23a)'/></svg>") ;
   width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   font-family: 'Georama', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+a {
+  text-decoration: none;
 }
 
 button,
@@ -40,16 +44,22 @@ input[type=submit] {
   cursor: pointer;
 }
 
+button:disabled {
+  background-color: hsl(0, 0%, 35%);
+}
+
 /* -------------- Header -------------- */
 header {
   position: sticky;
+  height: 42px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: var(--large) var(--normal);
   background-color: var(--brand-color);
 }
 header #logo {
-  width: var(--xx-large);
+  height: 42px;
 }
 header .open-sidebar-control {
   cursor: pointer;
@@ -61,6 +71,7 @@ main {
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
+  background-image: url("data:image/svg+xml,<svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='50.222' height='29.003' patternTransform='scale(1) rotate(10)'><rect x='0' y='0' width='100%' height='100%' fill='hsla(180, 17%, 98%, 1)'/><path d='M58.592-14.503h-16.74m6.277 3.627H56.5l4.188 7.25h-8.373zM60.686 3.623l-4.187 7.25h-8.372l4.187-7.25zM41.852-7.252l4.185 7.25-4.185 7.252L37.666 0zm25.11 7.25L58.593 14.5h-16.74L33.481-.001l8.371-14.501m16.74-.001l8.37 14.502m0 0h-16.74v0m-8.37-14.501l8.37 14.502-8.37 14.503M8.371-14.502H-8.37m6.276 3.627h8.371l4.188 7.25H2.093zM10.464 3.624l-4.186 7.25h-8.373l4.187-7.25zM-8.37-7.251L-4.185 0-8.37 7.252-12.556 0zM16.74 0l-8.37 14.502H-8.37L-16.742 0l8.371-14.501m16.74-.001L16.741-.001m0 0H.001v0m-8.37-14.501L0 0l-8.37 14.503m6.275 3.625h8.372l4.187 7.25H2.093zm12.558 14.499l-4.187 7.25h-8.372l4.187-7.25zM-8.371 21.752l4.185 7.25-4.185 7.252-4.185-7.251zm25.112 7.25L8.37 43.504H-8.37l-8.371-14.502 8.37-14.501M8.37 14.5l8.372 14.502m0 0H0v0M-8.37 14.502L0 29.003l-8.37 14.503M48.13 18.127l8.371.001 4.188 7.25h-8.373zm12.557 14.5l-4.187 7.249-8.372.001 4.187-7.25zM41.852 21.751l4.185 7.25-4.185 7.252-4.186-7.252zm25.11 7.25l-8.37 14.502h-16.74L33.48 29.003m25.11-14.503l8.372 14.503m0 0h-16.74v0m-8.371-14.501l8.37 14.501-8.37 14.503M33.482 0h-16.74m6.276 3.627l8.371.001 4.188 7.25h-8.373zm12.557 14.5l-4.187 7.249-8.372.001 4.187-7.25zM16.741 7.25l4.185 7.25-4.185 7.252-4.186-7.252zm25.11 7.25l-8.37 14.502h-16.74m25.11-14.502h-16.74v0M16.742 0l8.37 14.502-8.37 14.503'  stroke-linecap='square' stroke-width='0.5' stroke='hsla(0, 0%, 0%, 0.15)' fill='none'/></pattern></defs><rect width='800%' height='800%' transform='translate(0,0)' fill='url(%23a)'/></svg>");
 }
 
 /* -------------- Card -------------- */
@@ -81,6 +92,7 @@ div.search-form-container h1,
 div.search-form-container h2,
 div.search-form-container p {
   text-align: center;
+  padding: 0 var(--normal);
 }
 
 div.search-form-container h1 {
@@ -88,7 +100,22 @@ div.search-form-container h1 {
   padding-top: var(--large);
 }
 div.search-form-container p {
-  line-height: 1.5;
+  line-height: 1.54;
+}
+div.search-form-container p#submit-error {
+  display: block;
+  height: 0px;
+  overflow: hidden;
+  transition: .5s;
+  margin: 0;
+  background-color: hsl(23, 77%, 88%);
+}
+div.search-form-container p#submit-error.error {
+  height: 50px;
+  padding: var(--normal);
+}
+div.search-form-container p#submit-error.hidden {
+  display: none;
 }
 
 form#search-form {
@@ -106,6 +133,14 @@ form .form-group > label,
 form .form-group > legend {
   margin: 0 0 var(--small) 0;
 }
+
+form .form-group input[type='text'] {
+  height: var(--large);
+}
+form .form-group input:focus-visible {
+  outline: var(--brand-color-dark) solid 2px;
+}
+
 
 form fieldset#pricing {
   border: none;
@@ -132,7 +167,12 @@ form fieldset#pricing .checkbox-group label{
   text-align: center;
 }
 form fieldset#pricing .checkbox-group input:checked + label{
-  background-color: gray;
+  background-color: var(--brand-color-dark);
+  box-shadow: var(--brand-color) 0px 0px 0px 3px;
+}
+form fieldset#pricing .checkbox-group input:active + label{
+  background-color: var(--brand-color-dark);
+  box-shadow: var(--brand-color) 0px 0px 0px 3px;
 }
 form fieldset#pricing .checkbox-group input + label:hover{
   cursor: pointer;
@@ -150,11 +190,15 @@ footer {
   display: flex;
   justify-content: space-between;
   background-color: var(--brand-color);
-  padding: var(--small) var(--normal);
+  padding: var(--normal);
 }
 
 footer .attribution-group > a {
   display: flex;
+}
+
+footer p {
+  margin:0;
 }
 
 /* -------------- Visited Restaurants -------------- */
@@ -163,7 +207,9 @@ aside.visited-restaurant-holder {
   position: absolute;
   right: 0;
   background-color: var(--brand-color-unsat);
-  transition: 0.5s
+  transition: 0.75s;
+  width: 20rem;
+  z-index: 10000;
 }
 aside.visited-restaurant-holder .close-dialog-button { 
   position: absolute;
@@ -171,6 +217,7 @@ aside.visited-restaurant-holder .close-dialog-button {
   top: var(--large);
   cursor: pointer;
 }
+
 aside.visited-restaurant-holder h3 {
   margin-top: 0;
   padding-top: var(--large);
@@ -197,7 +244,81 @@ aside.visited-restaurant-holder ul > li p {
   margin-right: var(--normal);
 }
 aside.visited-restaurant-holder.closed {
-  right: -25rem;
+  right: -5rem;
+  width: 0;
 }
 
-/* -------------- Visited Restaurants -------------- */
+/* -------------- Restaurants -------------- */
+#restaurant-holder > .restaurant-card {
+  width: 90%;
+  height: calc(100vh - (40px + 2 * var(--large)) - 2 * var(--large));
+  min-height: 450px;
+  margin: var(--large) auto;
+  padding: var(--normal);
+  display: grid;
+  grid: "name name" auto
+        "details image" .75fr
+        "contact image" .75fr
+        "map map" 1fr
+        "nav nav" auto
+        "footer footer" auto
+        / 4fr 3fr;
+  gap: var(--normal);
+}
+
+.restaurant-card p {
+  margin: 0;
+  line-height: 1.54;
+}
+
+.restaurant-card.visited {
+  background-color: rgb(223, 223, 223);
+}
+
+.restaurant-card > .restaurant-name {
+  font-size: var(--large);
+  grid-area: name;
+  margin: 0;
+}
+.restaurant-card > .restaurant-details {
+  grid-area: details;
+}
+.restaurant-card > .restaurant-details > .rating-review {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: var(--small);
+}
+.restaurant-card > .restaurant-details > .rating-review > img {
+  margin-right: var(--normal);
+}
+.restaurant-card > .restaurant-contact {
+  grid-area: contact;
+  align-self: end;
+}
+.restaurant-card > .restaurant-contact > .been-there-button {
+  margin-top: var(--normal);
+}
+
+.restaurant-card > div.restaurant-image {
+  grid-area: image;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat:no-repeat;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+}
+.restaurant-card > div.map-location {
+  grid-area: map;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+}
+.restaurant-card > .restaurant-nav {
+  grid-area: nav;
+  display: flex;
+  justify-content: space-between;
+}
+.restaurant-card > footer {
+  grid-area: footer;
+  margin: 0 -1rem -1rem -1rem;
+}
+

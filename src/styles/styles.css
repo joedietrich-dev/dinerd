@@ -240,6 +240,7 @@ footer div.attribution-group p {
 /* -------------- Visited Restaurants -------------- */
 div.visited-restaurant-holder {
   height: 100%;
+  min-width: 20rem;
   position: absolute;
   right: 0;
   top: 0;

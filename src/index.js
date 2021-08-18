@@ -27,9 +27,14 @@ async function app() {
   const visitedRestaurants = new SavedRestaurants();
   const shiftPosition = positionTracker();
 
-  // form setup
+  // Form Setup
+  const searchFormContainer = document.querySelector('.search-form-container');
+  const searchForm = document.querySelector('#search-form');
   const rangeControl = document.querySelector("#distance");
   const rangeOutput = document.querySelector('#distance-display');
+  const restaurantHolder = document.querySelector('#restaurant-holder');
+
+  // Set up Range Control
   rangeControl.addEventListener('input', (e) => {
     const padRight = (value, length) => {
       const rightLength = value.toString().split('.')[1]?.length || 0
@@ -39,10 +44,28 @@ async function app() {
     rangeOutput.value = mileValue(e.target.value);
   });
 
-  const searchFormContainer = document.querySelector('.search-form-container');
-  const searchForm = document.querySelector('#search-form');
-  const restaurantHolder = document.querySelector('#restaurant-holder');
-  searchForm.addEventListener('submit', async (e) => {
+  // Set up Search Form Behavior
+  searchForm.addEventListener('submit', handleFormSubmit)
+
+  // Footer setup
+  const searchFooter = createFooter();
+  searchFormContainer.append(searchFooter);
+
+  // Visited List Setup
+  const visitedList = document.querySelector('#visited-restaurant-holder');
+  const openSidebarButton = document.querySelector('.open-sidebar-control');
+  const closeSidebarButton = document.querySelector('#close-visited-restaurant');
+  openSidebarButton.addEventListener('click', () => visitedList.classList.remove('closed'));
+  closeSidebarButton.addEventListener('click', () => visitedList.classList.add('closed'));
+  renderVisitedList();
+
+
+
+
+
+
+
+  async function handleFormSubmit(e) {
     e.preventDefault();
 
     const submitButton = document.querySelector('#search-form input[type=submit]');
@@ -50,7 +73,7 @@ async function app() {
     submitButton.setAttribute('disabled', 'true');
 
     const { location, distance } = e.target;
-    const allPrices = "1,2,3,4"
+    const allPrices = "1,2,3,4";
     const prices = Array.from(document.querySelectorAll('#search-form #pricing input[type=checkbox]:checked'))
       .map(check => check.value)
       .join(',') || allPrices;
@@ -64,10 +87,12 @@ async function app() {
       showResultError();
     } else {
       searchFormContainer.classList.add('hidden');
+      searchForm.reset();
 
       restaurantHolder.innerHTML = '';
       restaurantHolder.append(...unvisitedRestaurants.map(r => renderRestaurant(r)));
 
+      // Clean up Next / Previous buttons
       const firstPrev = document.querySelector('#restaurant-holder > .card:first-child .previous-button');
       const lastNext = document.querySelector('#restaurant-holder > .card:last-child .next-button');
 
@@ -76,35 +101,7 @@ async function app() {
       lastNext.style.visibility = 'hidden';
       lastNext.setAttribute('disabled', 'true');
     }
-  })
-
-
-
-  // Footer setup
-  const searchFooter = createFooter();
-  searchFormContainer.append(searchFooter);
-
-
-
-  // Visited List Setup
-  const visitedList = document.querySelector('#visited-restaurant-holder');
-  const openSidebarButton = document.querySelector('.open-sidebar-control');
-  openSidebarButton.addEventListener('click', e => {
-    visitedList.classList.remove('closed');
-  })
-  const closeSidebarButton = document.querySelector('#close-visited-restaurant');
-  closeSidebarButton.addEventListener('click', e => {
-    visitedList.classList.add('closed');
-  })
-  renderVisitedList();
-
-
-
-
-
-
-
-
+  }
 
   async function getRestaurants(location, distance, prices) {
     const isTest = false;

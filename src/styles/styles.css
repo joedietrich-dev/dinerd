@@ -20,15 +20,20 @@
   --brand-color-dark: hsla(var(--brand-hue), var(--brand-sat), var(--brand-lit-dark), var(--brand-opa));
 }
 
+@media screen and (max-width: 500px) {
+  :root {
+    --normal: .75rem;
+  }
+}
+
 body {
-  position: fixed;
+  font-family: 'Georama', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   background-color: hsl(180, 17%, 98%);
   width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  font-family: 'Georama', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  /* overflow: hidden; */
 }
 
 a {
@@ -44,8 +49,18 @@ input[type=submit] {
   cursor: pointer;
 }
 
-button:disabled {
+button.secondary,
+input[type=submit].secondary {
+  background-color: hsl(233, 37%, 58%);
+}
+
+button:disabled,
+input[type=submit]:disabled  {
   background-color: hsl(0, 0%, 35%);
+}
+
+.hidden {
+  display: none;
 }
 
 /* -------------- Header -------------- */
@@ -64,6 +79,14 @@ header #logo {
 header .open-sidebar-control {
   cursor: pointer;
 }
+@media screen and (max-width: 500px) {
+  header {
+    padding: var(--normal);
+  }
+}
+
+
+
 
 /* -------------- Main -------------- */
 main {
@@ -84,8 +107,15 @@ main {
 
 /* -------------- Search Form -------------- */
 div.search-form-container {
-  width: 30rem;
+  width: 95%;
+  max-width: 30rem;
   margin: var(--large) auto 0 auto;
+}
+
+@media screen and (max-width: 500px) {
+  div.search-form-container {
+    margin-top: var(--normal);
+  }
 }
 
 div.search-form-container h1,
@@ -93,6 +123,10 @@ div.search-form-container h2,
 div.search-form-container p {
   text-align: center;
   padding: 0 var(--normal);
+}
+div.search-form-container p.footer-copyright {
+  text-align: left;
+  padding: 0 ;
 }
 
 div.search-form-container h1 {
@@ -114,15 +148,18 @@ div.search-form-container p#submit-error.error {
   height: 50px;
   padding: var(--normal);
 }
-div.search-form-container p#submit-error.hidden {
-  display: none;
-}
 
 form#search-form {
   width: 80%;
   margin: 0 auto var(--normal) auto;
   display: grid;
   gap: var(--normal);
+}
+
+@media screen and (max-width: 500px) {
+  form#search-form {
+    width: 85%;
+  }
 }
 
 form .form-group{
@@ -202,59 +239,68 @@ footer p {
 }
 
 /* -------------- Visited Restaurants -------------- */
-aside.visited-restaurant-holder {
+div.visited-restaurant-holder {
   height: 100%;
   position: absolute;
   right: 0;
+  top: 0;
   background-color: var(--brand-color-unsat);
-  transition: 0.75s;
-  width: 20rem;
+  transition: transform 0.33s linear;
+  transform-origin: right center;
   z-index: 10000;
 }
-aside.visited-restaurant-holder .close-dialog-button { 
+div.visited-restaurant-holder .close-dialog-button { 
   position: absolute;
   right: var(--large);
   top: var(--large);
   cursor: pointer;
 }
 
-aside.visited-restaurant-holder h3 {
+div.visited-restaurant-holder h3 {
   margin-top: 0;
   padding-top: var(--large);
   padding-left: var(--large);
 }
-aside.visited-restaurant-holder ul {
+div.visited-restaurant-holder ul {
   display: flex;
   list-style: none;
   flex-direction: column;
   margin: 0;
   padding: 0;
 }
-aside.visited-restaurant-holder ul > li {
+div.visited-restaurant-holder ul > li {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   padding: var(--small) var(--large);
 }
-aside.visited-restaurant-holder ul > li:not(:last-child) {
+div.visited-restaurant-holder ul > li:not(:last-child) {
   border-bottom: 1px solid rgba(0, 0, 0, 0.5);
 }
-aside.visited-restaurant-holder ul > li p {
+div.visited-restaurant-holder ul > li p {
   margin-right: var(--normal);
 }
-aside.visited-restaurant-holder.closed {
-  right: -5rem;
-  width: 0;
+div.visited-restaurant-holder.closed {
+  transform: scaleX(0);
 }
 
 /* -------------- Restaurants -------------- */
+.card-holder {
+  display: flex;
+  flex-flow: row nowrap;
+  transition: transform .5s;
+}
+
 #restaurant-holder > .restaurant-card {
-  width: 90%;
-  height: calc(100vh - (40px + 2 * var(--large)) - 2 * var(--large));
+  /* Window width minus margin plus padding (100 - 4 - 2 = 92)*/
+  width: calc(100vw - 2 * var(--large) - 2 * var(--normal));
+  /* Header height plus margin plus padding*/
+  height: calc(100vh - (42px + 2 * var(--large)) - 2 * var(--large) - 2 * var(--normal));
   min-height: 450px;
-  margin: var(--large) auto;
+  margin: var(--large);
   padding: var(--normal);
+  flex: 0 0 auto;
   display: grid;
   grid: "name name" auto
         "details image" .75fr
@@ -264,6 +310,26 @@ aside.visited-restaurant-holder.closed {
         "footer footer" auto
         / 4fr 3fr;
   gap: var(--normal);
+}
+
+
+@media screen and (max-width: 500px) {
+  #restaurant-holder > .restaurant-card {
+    /* Window width minus margin plus padding (100 - 4 - 2 = 92)*/
+    width: calc(100vw - 2 * var(--normal) - 2 * var(--normal));
+    /* Header height plus margin plus padding*/
+    height: calc(100vh - (42px + 2 * var(--normal)) - 2 * var(--normal) - 2 * var(--normal));
+    min-height: 450px;
+    margin: var(--normal);
+    padding: var(--normal);
+    grid: "name " auto
+          "details " .75fr
+          "contact " .75fr
+          "map " 1fr
+          "nav " auto
+          "footer " auto
+          / 1fr;
+  }
 }
 
 .restaurant-card p {
@@ -308,6 +374,11 @@ aside.visited-restaurant-holder.closed {
   background-repeat:no-repeat;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
 }
+@media screen and (max-width: 500px) {
+  .restaurant-card > div.restaurant-image {
+    display: none;
+  }
+}
 .restaurant-card > div.map-location {
   grid-area: map;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
@@ -319,6 +390,5 @@ aside.visited-restaurant-holder.closed {
 }
 .restaurant-card > footer {
   grid-area: footer;
-  margin: 0 -1rem -1rem -1rem;
+  margin: 0 calc(0rem - var(--normal)) calc(0rem - var(--normal)) calc(0rem - var(--normal));
 }
-

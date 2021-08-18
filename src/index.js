@@ -25,10 +25,11 @@ app();
 
 async function app() {
   const visitedRestaurants = new SavedRestaurants();
+  const shiftPosition = positionTracker();
 
   // form setup
   const rangeControl = document.querySelector("#distance");
-  const rangeOutput = document.querySelector('#distance-display')
+  const rangeOutput = document.querySelector('#distance-display');
   rangeControl.addEventListener('input', (e) => {
     const padRight = (value, length) => {
       const rightLength = value.toString().split('.')[1]?.length || 0
@@ -36,32 +37,51 @@ async function app() {
     }
     const mileValue = (miles) => miles <= 1 ? `${padRight(miles, 2)} mile` : `${padRight(miles, 2)} miles`;
     rangeOutput.value = mileValue(e.target.value);
-  })
+  });
 
+  const searchFormContainer = document.querySelector('.search-form-container');
   const searchForm = document.querySelector('#search-form');
+  const restaurantHolder = document.querySelector('#restaurant-holder');
   searchForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    const submitButton = document.querySelector('#search-form input[type=submit]');
+    submitButton.innerText = 'Searching...';
+    submitButton.setAttribute('disabled', 'true');
+
     const { location, distance } = e.target;
     const allPrices = "1,2,3,4"
     const prices = Array.from(document.querySelectorAll('#search-form #pricing input[type=checkbox]:checked'))
       .map(check => check.value)
       .join(',') || allPrices;
     const restaurantsData = await getRestaurants(location.value, convertToMeters(distance.value), prices);
-    console.log(restaurantsData);
     const unvisitedRestaurants = scrambleArray(restaurantsData.filter(restaurant => !visitedRestaurants.getRestaurantIds().includes(restaurant.id)), 20);
-    console.log(unvisitedRestaurants);
 
-    const restaurantHolder = document.querySelector('#restaurant-holder');
-    restaurantHolder.innerHTML = '';
-    restaurantHolder.append(...unvisitedRestaurants.map(r => renderRestaurant(r)));
-    if (unvisitedRestaurants.length === 0) showResultError();
+    submitButton.innerText = 'Go!';
+    submitButton.removeAttribute('disabled');
+
+    if (unvisitedRestaurants.length === 0) {
+      showResultError();
+    } else {
+      searchFormContainer.classList.add('hidden');
+
+      restaurantHolder.innerHTML = '';
+      restaurantHolder.append(...unvisitedRestaurants.map(r => renderRestaurant(r)));
+
+      const firstPrev = document.querySelector('#restaurant-holder > .card:first-child .previous-button');
+      const lastNext = document.querySelector('#restaurant-holder > .card:last-child .next-button');
+
+      firstPrev.style.visibility = 'hidden';
+      firstPrev.setAttribute('disabled', 'true');
+      lastNext.style.visibility = 'hidden';
+      lastNext.setAttribute('disabled', 'true');
+    }
   })
 
 
 
   // Footer setup
   const searchFooter = createFooter();
-  const searchFormContainer = document.querySelector('.search-form-container');
   searchFormContainer.append(searchFooter);
 
 
@@ -214,13 +234,29 @@ async function app() {
       renderVisitedList();
     })
 
+    const restaurantCardHolder = document.querySelector('#restaurant-holder');
+
     const prevButton = document.createElement('button');
     prevButton.classList.add('button', 'previous-button');
     prevButton.innerText = '<';
+    prevButton.addEventListener('click', () => {
+      restaurantCardHolder.style.transform = `translate(-${shiftPosition(-100)}vw, 0)`;
+    })
+
+    const resetButton = document.createElement('button');
+    resetButton.classList.add('button', 'reset-button', 'secondary');
+    resetButton.innerText = "New Search";
+    resetButton.addEventListener('click', () => {
+      restaurantHolder.innerHTML = '';
+      searchFormContainer.classList.remove('hidden');
+    })
 
     const nextButton = document.createElement('button');
     nextButton.classList.add('button', 'next-button');
     nextButton.innerText = '>';
+    nextButton.addEventListener('click', () => {
+      restaurantCardHolder.style.transform = `translate(-${shiftPosition(100)}vw, 0)`;
+    })
 
     // Phone, Address, Visited
     const restaurantContactDetails = document.createElement('div');
@@ -230,7 +266,7 @@ async function app() {
     // Nav Buttons
     const navButtons = document.createElement('div');
     navButtons.classList.add('restaurant-nav');
-    navButtons.append(prevButton, nextButton);
+    navButtons.append(prevButton, resetButton, nextButton);
 
     // Footer
     const footer = createFooter(restaurantData.url);
@@ -282,11 +318,18 @@ async function app() {
 
     const copyright = document.createElement('p');
     copyright.classList.add('footer-copyright');
-    copyright.innerText = `©${new Date().getFullYear()} J. Dietrich / Dinerd`
+    copyright.innerText = `©${new Date().getFullYear()} J. Dietrich`;
 
     footer.append(copyright, attribution);
 
     return footer
+  }
+
+  function positionTracker() {
+    let currentPosition = 0;
+    return function changePosition(shift) {
+      return currentPosition += shift;
+    }
   }
 
   function convertToMeters(miles) {

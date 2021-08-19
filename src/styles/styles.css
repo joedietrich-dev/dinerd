@@ -88,6 +88,11 @@ header .open-sidebar-control {
     padding: var(--normal);
   }
 }
+@media (min-height: 768px) {
+  header {
+    padding: var(--normal);
+  }
+}
 
 
 

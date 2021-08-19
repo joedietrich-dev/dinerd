@@ -27,6 +27,11 @@ async function app() {
   const visitedRestaurants = new SavedRestaurants();
   const shiftPosition = positionTracker();
 
+  // Wake server
+  fetch('https://dinerd-backend.herokuapp.com/')
+    .then((res) => res.ok || new Error('Search Results Unavailable.'))
+    .catch((err) => console.log(err));
+
   // Form Setup
   const searchFormContainer = document.querySelector('.search-form-container');
   const searchForm = document.querySelector('#search-form');
@@ -69,7 +74,7 @@ async function app() {
     e.preventDefault();
 
     const submitButton = document.querySelector('#search-form input[type=submit]');
-    submitButton.innerText = 'Searching...';
+    submitButton.value = 'Searching...';
     submitButton.setAttribute('disabled', 'true');
 
     const { location, distance } = e.target;
@@ -80,7 +85,7 @@ async function app() {
     const restaurantsData = await getRestaurants(location.value, convertToMeters(distance.value), prices);
     const unvisitedRestaurants = scrambleArray(restaurantsData.filter(restaurant => !visitedRestaurants.getRestaurantIds().includes(restaurant.id)), 20);
 
-    submitButton.innerText = 'Go!';
+    submitButton.value = 'Go!';
     submitButton.removeAttribute('disabled');
 
     if (unvisitedRestaurants.length === 0) {
@@ -104,8 +109,7 @@ async function app() {
   }
 
   async function getRestaurants(location, distance, prices) {
-    const isTest = false;
-    const url = isTest ? 'http://localhost:3000/api/test' : `http://localhost:3000/restaurants?location=${location}&price=${prices}&distance=${distance}`;
+    const url = `https://dinerd-backend.herokuapp.com/restaurants?location=${location}&price=${prices}&distance=${distance}`;
 
     const results = await fetch(url, { method: 'GET' })
       .then(res => {

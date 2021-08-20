@@ -33,7 +33,6 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  /* overflow: hidden; */
 }
 
 a {
@@ -74,7 +73,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--large) var(--normal);
+  padding: var(--normal);
   background-color: var(--brand-color);
 }
 header #logo {
@@ -83,18 +82,6 @@ header #logo {
 header .open-sidebar-control {
   cursor: pointer;
 }
-@media screen and (max-width: 500px) {
-  header {
-    padding: var(--normal);
-  }
-}
-@media (min-height: 768px) {
-  header {
-    padding: var(--normal);
-  }
-}
-
-
 
 
 /* -------------- Main -------------- */
@@ -305,7 +292,7 @@ div.visited-restaurant-holder.closed {
   /* Window width minus margin plus padding (100 - 4 - 2 = 92)*/
   width: calc(100vw - 2 * var(--large) - 2 * var(--normal));
   /* Header height plus margin plus padding*/
-  height: calc(100vh - (42px + 2 * var(--large)) - 2 * var(--large) - 2 * var(--normal));
+  height: calc(100vh - (42px + 2 * var(--normal)) - 2 * var(--large) - 2 * var(--normal));
   min-height: 450px;
   margin: var(--large);
   padding: var(--normal);

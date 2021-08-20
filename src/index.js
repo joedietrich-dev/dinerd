@@ -247,7 +247,7 @@ async function app() {
     resetButton.innerText = "New Search";
     resetButton.addEventListener('click', () => {
       restaurantHolder.innerHTML = '';
-      restaurantHolder.style.transform = `translate(0, 0)`;
+      restaurantHolder.style.transform = `translate(-${shiftPosition(0, true)}vw, 0)`;
       searchFormContainer.classList.remove('hidden');
     })
 
@@ -327,7 +327,8 @@ async function app() {
 
   function positionTracker() {
     let currentPosition = 0;
-    return function changePosition(shift) {
+    return function changePosition(shift, reset = false) {
+      if (reset) currentPosition = 0;
       return currentPosition += shift;
     }
   }

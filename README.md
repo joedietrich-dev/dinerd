@@ -7,7 +7,7 @@ Turn to *Dinerd* to help you answer the age-old question:
 
 I developed *Dinerd* to help me break out of one of the routines I found myself falling into during the past year - always going to or ordering from the same restaurants over and over again.
 
-Comfort food is great! But every so oftern it's good to branch out and try new things - and this is where *Dinerd* comes in. *Dinerd* leverages the [Yelp Fusion API](https://www.yelp.com/developers/documentation/v3/get_started) to serve the prospective diner random restaurants near them, and lets them skip ones they've already been to!
+Comfort food is great! But every so often it's good to branch out and try new things - and this is where *Dinerd* comes in. *Dinerd* leverages the [Yelp Fusion API](https://www.yelp.com/developers/documentation/v3/get_started) to serve the prospective diner random restaurants near them, and lets them skip ones they've already been to!
 
 ## Basic Features
 

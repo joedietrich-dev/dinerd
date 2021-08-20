@@ -235,13 +235,11 @@ async function app() {
       renderVisitedList();
     })
 
-    const restaurantCardHolder = document.querySelector('#restaurant-holder');
-
     const prevButton = document.createElement('button');
     prevButton.classList.add('button', 'previous-button');
     prevButton.innerText = '<';
     prevButton.addEventListener('click', () => {
-      restaurantCardHolder.style.transform = `translate(-${shiftPosition(-100)}vw, 0)`;
+      restaurantHolder.style.transform = `translate(-${shiftPosition(-100)}vw, 0)`;
     })
 
     const resetButton = document.createElement('button');
@@ -249,6 +247,7 @@ async function app() {
     resetButton.innerText = "New Search";
     resetButton.addEventListener('click', () => {
       restaurantHolder.innerHTML = '';
+      restaurantHolder.style.transform = `translate(0, 0)`;
       searchFormContainer.classList.remove('hidden');
     })
 
@@ -256,7 +255,7 @@ async function app() {
     nextButton.classList.add('button', 'next-button');
     nextButton.innerText = '>';
     nextButton.addEventListener('click', () => {
-      restaurantCardHolder.style.transform = `translate(-${shiftPosition(100)}vw, 0)`;
+      restaurantHolder.style.transform = `translate(-${shiftPosition(100)}vw, 0)`;
     })
 
     // Phone, Address, Visited
@@ -281,7 +280,7 @@ async function app() {
       navButtons,
       footer);
 
-    setTimeout(() => map.invalidateSize(), 1000);
+    setTimeout(() => map.invalidateSize(), 500);
 
     return restaurantCard;
   }
